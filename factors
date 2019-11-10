@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+for i in `cat $1`
+do
+	r=$(python3 factorization.py $i)
+	num1=$r
+	num2=$(bc <<< $i/$r)
+	result=$(echo "if($num2 > $num1) 1 else 0" | bc)
+	if (($result == 1)); then
+		num3=$num1
+		num1=$num2
+		num2=$num3
+	fi
+	echo "$i=$num1*$num2"
+done

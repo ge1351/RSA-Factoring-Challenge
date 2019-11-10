@@ -7,7 +7,7 @@ def primef(n):
         return int(n)
     if n % 2 == 0:
         return 2
-    elif n % 3 ==0:
+    elif n % 3 == 0:
         return 3
     else:
         for i in range(5, int((n)**0.5) + 1, 6):
@@ -16,5 +16,6 @@ def primef(n):
             if n % (i + 2) == 0:
                 return primef(n/(i+2))
     return int(n)
+
 
 print(primef(int(sys.argv[1])))

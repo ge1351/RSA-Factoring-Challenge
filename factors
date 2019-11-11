@@ -1,21 +1,39 @@
 #!/usr/bin/env bash
+
+check_factor()
+{
+	if [ $# -ne 3 ];
+        then
+                args=("$@")
+                count=0
+                num3=1
+                for a in ${args[*]};
+                do
+                        if [ $count -gt 1 ];
+                        then
+                                num3=$(echo $a*$num3 | bc)
+                        fi
+                        count=$((count + 1))
+                done
+        else
+                num3=$3
+        fi
+
+        num1=$(echo "$1" | tr ':' '=')
+        echo "$num1$2*$num3"
+}
+
 if [ $# -ne 1 ]
 then
-  echo 'Usage: factors <file>'
-  exit 1
+        echo 'Usage: factors <file>'
+        exit 1
 else
 
         while read i
         do
-	        r=$(python3 factorization.py "$i")
-        	num1=$r
-	        num2=$(bc <<< "$i"/"$r")
-	        result=$(echo "if($num2 > $num1) 1 else 0" | bc)
-	        if ((result == 1)); then
-		        num3=$num1
-		        num1=$num2
-		        num2=$num3
-                fi
-	        echo "$i=$num1*$num2"
+
+                result=$(factor "$i")
+                check_factor $result
+
         done < "$1"
 fi
